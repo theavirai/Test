@@ -2,54 +2,39 @@ package OneGroup.Intro;
 
 import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 public class oneClass {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		       
-		String expectedDay = "22";
-		String expectedMonth = "July";
-		    	String expectedYear = "2025";	   
 
-		        WebDriver driver = new ChromeDriver();
-		        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
-		            // Step 1: Open the URL
-		            driver.get("https://spurexperiences.com/experiences/temecula-boos-and-booze-tour?start_date=&page=1&request_type=");
+            
+            driver.get("https://spurexperiences.com/experiences/temecula-boos-and-booze-tour?start_date=&page=1&request_type=");
 
-		            // Step 2: Click on the calendar input to show the date picker
-		            WebElement dateInput = driver.findElement(By.cssSelector("input[placeholder='mm-dd-yyyy']"));
-		            dateInput.click();
-		            
-		          //div[@role='gridcell']
-		           
-		    			String calenderMonth = driver.findElement(By.xpath("//select[@title='Select month']")).getText();
-		    			String calenderYear = driver.findElement(By.xpath("//select[@title='Select year']")).getText();
-		    		
-		    			if(calenderMonth.equals(expectedMonth) && calenderYear.equals(expectedYear))
-		    			{
-		    				List <WebElement> daysList = driver.findElements(By.xpath("//div[@role='gridcell']"));
-		    				
-		    				for(WebElement e:daysList)
-		    				{
-		    					String calenderDay = e.getText();
-		    					if(calenderDay.equals(expectedDay))
-		    					{
-		    						e.click();
-		    						return;
-		    						
-		    					}
-		    				}
-		    					
-		    				
-		    }
-		
-	}}
+            Actions act =  new Actions(driver);
+            act.moveToElement(driver.findElement(By.xpath("//div[@class='sliderBox']"))).click().perform();
+            
+            driver.findElement(By.xpath("//input[@id='ngbDate']")).click();
+            
+    		List <WebElement> daysList = driver.findElements(By.xpath("//div[@class='ngb-dp-content ngb-dp-months']/div/ngb-datepicker-month/div/div/span"));
 
+    		for (WebElement Calender : daysList) 
+    		{
+    				    //System.out.println(Calender.getText());   		                    
+    		                    act.moveToElement(Calender).perform();
+    		                    String hoverText = Calender.getText();
+    		                    System.out.println(hoverText);
+    		               
+    		  }
+    	}
+ 	
+}
